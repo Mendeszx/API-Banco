@@ -33,7 +33,7 @@ public class SwaggerConfig {
         ApiInfo apiInfo = new ApiInfo(
                 "Banco API Rest",
                 "API Rest de um sistema de gerenciamento de contas.",
-                "1.0",
+                "1.1",
                 "Terms of Service",
                 new Contact("Guilherme Mendes da Cunha", "https://www.linkedin.com/in/guilherme-mendes-cunha/",
                         "michellidibrito@gmail.com"),
