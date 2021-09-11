@@ -1,6 +1,7 @@
 package com.banco.api.controller;
 
 import com.banco.api.model.Cliente;
+import com.banco.api.model.ClienteDto;
 import com.banco.api.repository.Repository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,14 +22,21 @@ public class ClienteResources {
 
     @GetMapping("/cliente")
     @ApiOperation(value = "Retorna uma lista de clientes")
-    public List<Cliente> listaDeClientes(){
-        return repository.findAll();
+    public List<ClienteDto> listaDeClientes(String nomeDoCliente){
+        if (nomeDoCliente == null){
+            return ClienteDto.converter(repository.findAll());
+        }
+        else
+        {
+            return ClienteDto.converter(repository.findByNomeDoCliente(nomeDoCliente));
+        }
     }
 
-    @GetMapping("/cliente/{id}")
-    @ApiOperation(value = "Retorna um cliente específico pelo ID")
-    public Optional<Cliente> Cliente(@PathVariable(value = "id")long id){
-        return repository.findById(id);
+    @GetMapping("/cliente/{numeroDaConta}")
+    @ApiOperation(value = "Retorna um cliente específico pelo número da conta")
+    public List<ClienteDto> Cliente(@PathVariable(value = "numeroDaConta")int numeroDaConta){
+        System.out.println(numeroDaConta);
+        return ClienteDto.converter(repository.findByNumeroDaConta(numeroDaConta));
     }
 
     @PostMapping("/cliente")
