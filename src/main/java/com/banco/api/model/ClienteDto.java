@@ -5,12 +5,14 @@ import java.util.stream.Collectors;
 
 public class ClienteDto {
     private long id;
-    private String nomeDoCliente;
+    private String nome;
+    private String cpf;
     private int numeroDaConta;
 
     public ClienteDto(Cliente cliente){
         this.id = cliente.getId();
-        this.nomeDoCliente = cliente.getNomeDoCliente();
+        this.nome = cliente.getNome();
+        this.cpf = cliente.getCpf();
         this.numeroDaConta = cliente.getNumeroDaConta();
     }
 
@@ -22,11 +24,15 @@ public class ClienteDto {
         return id;
     }
 
-    public String getNomeDoCliente() {
-        return nomeDoCliente;
+    public String getNome() {
+        return nome;
     }
 
     public int getNumeroDaConta() {
         return numeroDaConta;
+    }
+
+    public String getCpf() {
+        return cpf;
     }
 }

@@ -14,7 +14,9 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String nomeDoCliente;
+    private String nome;
+
+    private String cpf;
 
     private double saldoDaConta;
 
@@ -24,9 +26,10 @@ public class Cliente implements Serializable {
 
     }
 
-    public Cliente(String nomeDoCliente, int numeroDaConta) {
-        this.nomeDoCliente = nomeDoCliente;
+    public Cliente(String nome, int numeroDaConta, String cpf) {
+        this.nome = nome;
         this.numeroDaConta = numeroDaConta;
+        this.cpf = cpf;
     }
 
     public long getId() {
@@ -37,12 +40,20 @@ public class Cliente implements Serializable {
         this.id = id;
     }
 
-    public String getNomeDoCliente() {
-        return nomeDoCliente;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeDoCliente(String nomeDoCliente) {
-        this.nomeDoCliente = nomeDoCliente;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public double getSaldoDaConta() {

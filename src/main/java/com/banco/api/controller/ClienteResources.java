@@ -27,13 +27,13 @@ public class ClienteResources {
 
     @GetMapping("/cliente")
     @ApiOperation(value = "Retorna uma lista de clientes")
-    public List<ClienteDto> listaDeClientes(String nomeDoCliente){
-        if (nomeDoCliente == null){
+    public List<ClienteDto> listaDeClientes(String nome){
+        if (nome == null){
             return ClienteDto.converter(repository.findAll());
         }
         else
         {
-            return ClienteDto.converter(repository.findByNomeDoCliente(nomeDoCliente));
+            return ClienteDto.converter(repository.findByNome(nome));
         }
     }
 
@@ -53,16 +53,16 @@ public class ClienteResources {
         return ResponseEntity.created(uri).body(new ClienteDto(cliente));
     }
 
+//    @PutMapping("/cliente")
+//    @ApiOperation(value = "Atualiza um cliente no Banco")
+//    public Cliente atualizaCliente(@RequestBody Cliente cliente){
+//        return repository.save(cliente);
+//    }
+
     @DeleteMapping("/cliente")
     @ApiOperation(value = "Deleta um cliente no Banco")
     public String deletaCliente(@RequestBody Cliente cliente){
         repository.delete(cliente);
         return "Cliente deletado com sucesso!";
-    }
-
-    @PutMapping("/cliente")
-    @ApiOperation(value = "Atualiza um cliente no Banco")
-    public Cliente atualizaCliente(@RequestBody Cliente cliente){
-        return repository.save(cliente);
     }
 }

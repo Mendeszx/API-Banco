@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface Repository extends JpaRepository<Cliente,Long> {
     List<Cliente> findByNumeroDaConta(int numeroDaConta);
-    List<Cliente> findByNomeDoCliente(String nomeDoCliente);
+    List<Cliente> findByNome(String nome);
 }

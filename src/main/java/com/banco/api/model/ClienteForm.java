@@ -9,16 +9,19 @@ import org.hibernate.validator.constraints.Length;
 public class ClienteForm {
 
     @NotNull @NotEmpty
-    private String nomeDoCliente;
+    private String nome;
 
     private int numeroDaConta;
 
-    public String getNomeDoCliente() {
-        return nomeDoCliente;
+    @NotNull @NotEmpty
+    private String cpf;
+
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeDoCliente(String nomeDoCliente) {
-        this.nomeDoCliente = nomeDoCliente;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getNumeroDaConta() {
@@ -29,7 +32,15 @@ public class ClienteForm {
         this.numeroDaConta = numeroDaConta;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
     public Cliente converter(ClienteForm clienteForm){
-        return new Cliente(nomeDoCliente,numeroDaConta);
+        return new Cliente(nome,numeroDaConta,cpf);
     }
 }
