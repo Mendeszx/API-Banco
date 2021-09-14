@@ -2,12 +2,17 @@ package com.banco.api.controller;
 
 import com.banco.api.model.Cliente;
 import com.banco.api.model.ClienteDto;
+import com.banco.api.model.ClienteForm;
 import com.banco.api.repository.Repository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +46,11 @@ public class ClienteResources {
 
     @PostMapping("/cliente")
     @ApiOperation(value = "Salva um novo cliente no Banco")
-    public Cliente salvaCliente(@RequestBody Cliente cliente){
-        return repository.save(cliente);
+    public ResponseEntity<ClienteDto> salvaCliente(@RequestBody @Valid ClienteForm clienteForm, UriComponentsBuilder uriComponentsBuilder){
+        Cliente cliente = clienteForm.converter(clienteForm);
+        repository.save(cliente);
+        URI uri = uriComponentsBuilder.path("/cliente/{id}").buildAndExpand(cliente.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ClienteDto(cliente));
     }
 
     @DeleteMapping("/cliente")

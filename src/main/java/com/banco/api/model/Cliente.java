@@ -20,6 +20,15 @@ public class Cliente implements Serializable {
 
     private int numeroDaConta;
 
+    public Cliente(){
+
+    }
+
+    public Cliente(String nomeDoCliente, int numeroDaConta) {
+        this.nomeDoCliente = nomeDoCliente;
+        this.numeroDaConta = numeroDaConta;
+    }
+
     public long getId() {
         return id;
     }
