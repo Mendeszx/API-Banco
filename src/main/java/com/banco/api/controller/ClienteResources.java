@@ -45,9 +45,12 @@ public class ClienteResources {
 
     @GetMapping("/cliente/{numeroDaConta}")
     @ApiOperation(value = "Retorna um cliente específico pelo número da conta")
-    public List<ClienteDto> Cliente(@PathVariable(value = "numeroDaConta")int numeroDaConta){
-        System.out.println(numeroDaConta);
-        return ClienteDto.converter(repository.findByNumeroDaConta(numeroDaConta));
+    public ResponseEntity<ClienteDto> Cliente(@PathVariable(value = "numeroDaConta")int numeroDaConta){
+        Optional<Cliente> optional = repository.findByNumeroDaConta(numeroDaConta);
+        if (optional.isPresent()){
+            return ResponseEntity.ok(new ClienteDto(optional.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/cliente")
@@ -63,16 +66,22 @@ public class ClienteResources {
     @Transactional
     @ApiOperation(value = "Atualiza um cliente no Banco")
     public ResponseEntity<ClienteDto> atualizaCliente(@PathVariable Long id,  @RequestBody @Valid ClienteFormUpdate clienteFormUpdate){
-        Cliente cliente = clienteFormUpdate.atualizar(id, repository);
-
-        return ResponseEntity.ok(new ClienteDto(cliente));
+        Optional<Cliente> optional = repository.findById(id);
+        if (optional.isPresent()){
+            Cliente cliente = clienteFormUpdate.atualizar(id, repository);
+            return ResponseEntity.ok(new ClienteDto(cliente));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/cliente/{id}")
-    @ApiOperation(value = "Deleta um cliente no Banco")
-    public String deletaCliente(@PathVariable Long id){
-        repository.deleteById(id);
-        ResponseEntity.ok().build();
-        return "Cliente deletado com sucesso!";
+    @ApiOperation(value = "Deleta um cliente por Id")
+    public ResponseEntity<?> deletaCliente(@PathVariable Long id){
+        Optional<Cliente> optional = repository.findById(id);
+        if (optional.isPresent()){
+            repository.deleteById(id);
+            return ResponseEntity.ok(new ClienteDto(optional.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 }
