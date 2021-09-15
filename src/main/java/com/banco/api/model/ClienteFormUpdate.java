@@ -1,19 +1,16 @@
 package com.banco.api.model;
 
+import com.banco.api.repository.Repository;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class ClienteForm {
-
-    @NotNull @NotBlank(message = "Nome é obrigatório")
+public class ClienteFormUpdate {
+    @NotNull
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
     private int numeroDaConta;
-
-    @NotNull @NotBlank(message = "Nome é obrigatório")
-    private String cpf;
 
     public String getNome() {
         return nome;
@@ -31,15 +28,12 @@ public class ClienteForm {
         this.numeroDaConta = numeroDaConta;
     }
 
-    public String getCpf() {
-        return cpf;
+    public Cliente atualizar(Long id, Repository repository){
+    Cliente cliente = repository.getOne(id);
+    cliente.setNome(this.nome);
+    cliente.setNumeroDaConta(this.numeroDaConta);
+
+    return cliente;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public Cliente converter(ClienteForm clienteForm){
-        return new Cliente(nome,numeroDaConta,cpf);
-    }
 }

@@ -3,7 +3,9 @@ package com.banco.api.controller;
 import com.banco.api.model.Cliente;
 import com.banco.api.model.ClienteDto;
 import com.banco.api.model.ClienteForm;
+import com.banco.api.model.ClienteFormUpdate;
 import com.banco.api.repository.Repository;
+import com.banco.api.service.ApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -24,6 +27,9 @@ public class ClienteResources {
 
     @Autowired
     Repository repository;
+
+    @Autowired
+    ApiService service;
 
     @GetMapping("/cliente")
     @ApiOperation(value = "Retorna uma lista de clientes")
@@ -53,16 +59,20 @@ public class ClienteResources {
         return ResponseEntity.created(uri).body(new ClienteDto(cliente));
     }
 
-//    @PutMapping("/cliente")
-//    @ApiOperation(value = "Atualiza um cliente no Banco")
-//    public Cliente atualizaCliente(@RequestBody Cliente cliente){
-//        return repository.save(cliente);
-//    }
+    @PutMapping("/cliente/{id}")
+    @Transactional
+    @ApiOperation(value = "Atualiza um cliente no Banco")
+    public ResponseEntity<ClienteDto> atualizaCliente(@PathVariable Long id,  @RequestBody @Valid ClienteFormUpdate clienteFormUpdate){
+        Cliente cliente = clienteFormUpdate.atualizar(id, repository);
 
-    @DeleteMapping("/cliente")
+        return ResponseEntity.ok(new ClienteDto(cliente));
+    }
+
+    @DeleteMapping("/cliente/{id}")
     @ApiOperation(value = "Deleta um cliente no Banco")
-    public String deletaCliente(@RequestBody Cliente cliente){
-        repository.delete(cliente);
+    public String deletaCliente(@PathVariable Long id){
+        repository.deleteById(id);
+        ResponseEntity.ok().build();
         return "Cliente deletado com sucesso!";
     }
 }

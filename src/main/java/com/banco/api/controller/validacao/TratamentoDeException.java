@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
-public class TratamentoDeErro {
+public class TratamentoDeException {
 
     @Autowired
     private MessageSource messageSource;

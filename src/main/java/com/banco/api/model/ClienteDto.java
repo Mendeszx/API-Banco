@@ -6,13 +6,11 @@ import java.util.stream.Collectors;
 public class ClienteDto {
     private long id;
     private String nome;
-    private String cpf;
     private int numeroDaConta;
 
     public ClienteDto(Cliente cliente){
         this.id = cliente.getId();
         this.nome = cliente.getNome();
-        this.cpf = cliente.getCpf();
         this.numeroDaConta = cliente.getNumeroDaConta();
     }
 
@@ -32,7 +30,4 @@ public class ClienteDto {
         return numeroDaConta;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
 }
