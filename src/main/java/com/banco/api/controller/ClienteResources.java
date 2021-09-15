@@ -9,6 +9,11 @@ import com.banco.api.service.ApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,13 +38,16 @@ public class ClienteResources {
 
     @GetMapping("/cliente")
     @ApiOperation(value = "Retorna uma lista de clientes")
-    public List<ClienteDto> listaDeClientes(String nome){
+    public Page<ClienteDto> listaDeClientes(@RequestParam(required = false) String nome, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable paginacao){
+
         if (nome == null){
-            return ClienteDto.converter(repository.findAll());
+            Page<Cliente> clientes = repository.findAll(paginacao);
+            return ClienteDto.converter(clientes);
         }
         else
         {
-            return ClienteDto.converter(repository.findByNome(nome));
+            Page<Cliente> clientes = repository.findByNome(nome, paginacao);
+            return ClienteDto.converter(clientes);
         }
     }
 

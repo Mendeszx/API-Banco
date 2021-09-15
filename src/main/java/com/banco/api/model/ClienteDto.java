@@ -1,5 +1,7 @@
 package com.banco.api.model;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +16,8 @@ public class ClienteDto {
         this.numeroDaConta = cliente.getNumeroDaConta();
     }
 
-    public static List<ClienteDto> converter(List<Cliente> cliente){
-        return cliente.stream().map(ClienteDto::new).collect(Collectors.toList());
+    public static Page<ClienteDto> converter(Page<Cliente> cliente){
+        return cliente.map(ClienteDto::new);
     }
 
     public long getId() {
