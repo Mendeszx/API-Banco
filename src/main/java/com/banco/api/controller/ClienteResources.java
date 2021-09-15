@@ -9,6 +9,8 @@ import com.banco.api.service.ApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +40,7 @@ public class ClienteResources {
 
     @GetMapping("/cliente")
     @ApiOperation(value = "Retorna uma lista de clientes")
+    @Cacheable(value = "listaDeClientes")
     public Page<ClienteDto> listaDeClientes(@RequestParam(required = false) String nome, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable paginacao){
 
         if (nome == null){
@@ -53,6 +56,7 @@ public class ClienteResources {
 
     @GetMapping("/cliente/{numeroDaConta}")
     @ApiOperation(value = "Retorna um cliente específico pelo número da conta")
+    @Cacheable(value = "Cliente")
     public ResponseEntity<ClienteDto> Cliente(@PathVariable(value = "numeroDaConta")int numeroDaConta){
         Optional<Cliente> optional = repository.findByNumeroDaConta(numeroDaConta);
         if (optional.isPresent()){
@@ -62,6 +66,7 @@ public class ClienteResources {
     }
 
     @PostMapping("/cliente")
+    @CacheEvict(value = "listaDeClientes", allEntries = true)
     @ApiOperation(value = "Salva um novo cliente no Banco")
     public ResponseEntity<ClienteDto> salvaCliente(@RequestBody @Valid ClienteForm clienteForm, UriComponentsBuilder uriComponentsBuilder){
         Cliente cliente = clienteForm.converter(clienteForm);
@@ -72,6 +77,7 @@ public class ClienteResources {
 
     @PutMapping("/cliente/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeClientes", allEntries = true)
     @ApiOperation(value = "Atualiza um cliente no Banco")
     public ResponseEntity<ClienteDto> atualizaCliente(@PathVariable Long id,  @RequestBody @Valid ClienteFormUpdate clienteFormUpdate){
         Optional<Cliente> optional = repository.findById(id);
@@ -83,6 +89,7 @@ public class ClienteResources {
     }
 
     @DeleteMapping("/cliente/{id}")
+    @CacheEvict(value = "listaDeClientes", allEntries = true)
     @ApiOperation(value = "Deleta um cliente por Id")
     public ResponseEntity<?> deletaCliente(@PathVariable Long id){
         Optional<Cliente> optional = repository.findById(id);
