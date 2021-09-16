@@ -1,6 +1,8 @@
 package com.banco.api.model;
 
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -50,7 +52,8 @@ public class ClienteForm {
     }
 
     public void setSenha(String senha) {
-        this.senha = senha;
+        String salt = BCrypt.gensalt();
+        this.senha = BCrypt.hashpw(senha, salt);
     }
 
     public String getEmail() {
