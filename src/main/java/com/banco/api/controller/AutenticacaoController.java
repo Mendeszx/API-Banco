@@ -3,6 +3,7 @@ package com.banco.api.controller;
 import com.banco.api.model.LoginForm;
 import com.banco.api.model.TokenDto;
 import com.banco.api.service.TokenService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,7 @@ public class AutenticacaoController {
     TokenService tokenService;
 
     @PostMapping
+    @ApiOperation(value = "Autentica um cliente na aplicação por JWT")
     public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form){
         UsernamePasswordAuthenticationToken dadosLogin = form.converter();
         try{

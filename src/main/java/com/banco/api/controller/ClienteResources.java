@@ -78,7 +78,7 @@ public class ClienteResources {
     @PutMapping("/cliente/{id}")
     @Transactional
     @CacheEvict(value = "listaDeClientes", allEntries = true)
-    @ApiOperation(value = "Atualiza um cliente no Banco")
+    @ApiOperation(value = "Atualiza um cliente no banco de dados pelo Id")
     public ResponseEntity<ClienteDto> atualizaCliente(@PathVariable Long id,  @RequestBody @Valid ClienteFormUpdate clienteFormUpdate){
         Optional<Cliente> optional = repository.findById(id);
         if (optional.isPresent()){
