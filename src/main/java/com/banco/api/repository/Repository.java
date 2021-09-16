@@ -12,4 +12,5 @@ public interface Repository extends JpaRepository<Cliente,Long> {
     Optional<Cliente> findByNumeroDaConta(int numeroDaConta);
     Page<Cliente> findByNome(String nome, Pageable paginacao);
     List<Cliente> findByCpf(String cpf);
+    Optional<Cliente> findByEmail(String email);
 }

@@ -12,6 +12,12 @@ public class ClienteFormUpdate {
 
     private int numeroDaConta;
 
+    @NotBlank(message = "Senha é obrigatório")
+    private String senha;
+
+    @NotBlank(message = "Email é obrigatório")
+    private String email;
+
     public String getNome() {
         return nome;
     }
@@ -28,12 +34,29 @@ public class ClienteFormUpdate {
         this.numeroDaConta = numeroDaConta;
     }
 
-    public Cliente atualizar(Long id, Repository repository){
-    Cliente cliente = repository.getOne(id);
-    cliente.setNome(this.nome);
-    cliente.setNumeroDaConta(this.numeroDaConta);
+    public String getSenha() {
+        return senha;
+    }
 
-    return cliente;
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Cliente atualizar(Long id, Repository repository){
+        Cliente cliente = repository.getOne(id);
+        cliente.setNome(this.nome);
+        cliente.setNumeroDaConta(this.numeroDaConta);
+        cliente.setSenha(this.senha);
+        cliente.setEmail(this.email);
+        return cliente;
     }
 
 }
